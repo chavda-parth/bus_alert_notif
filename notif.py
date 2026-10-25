@@ -1,4 +1,4 @@
-import requests
+from curl_cffi import requests
 from datetime import datetime, date
 from searchurl import SearchURL
 from projectenums import BusCategory
