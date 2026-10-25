@@ -49,7 +49,16 @@ def get_inventory(category: BusCategory) -> dict:
         json=payload,
         impersonate="chrome"
     )
-    return response.json()["data"]["inventories"]
+
+    res_json: dict = response.json()
+
+    if 'success' not in res_json.keys() or not res_json['success']:
+        return {}
+
+    data = res_json["data"]
+    inventories = data["inventories"]
+
+    return inventories
 
 def send_notification(title: str, message:str):
     requests.post(
