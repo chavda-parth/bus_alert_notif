@@ -16,8 +16,10 @@ def get_inventory(category: BusCategory) -> dict:
 
     headers = {
         "accept": "*/*",
+        "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
         "content-type": "application/json",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" #Pretending to be a real browser
+        "origin": "https://www.redbus.in",
+        "referer": "https://www.redbus.in/bus-tickets/jamnagar-to-rajkot"
     }
 
     payload = {
@@ -41,7 +43,12 @@ def get_inventory(category: BusCategory) -> dict:
         "preRouteFilters": None
     }
 
-    response = requests.post(url.get_formatted_url(), headers=headers, json=payload)
+    response = requests.post(
+        url.get_formatted_url(), 
+        headers=headers, 
+        json=payload,
+        impersonate="chrome"
+    )
     return response.json()["data"]["inventories"]
 
 def send_notification(title: str, message:str):
