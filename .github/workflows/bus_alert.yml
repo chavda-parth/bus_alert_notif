@@ -1,0 +1,25 @@
+name: "Morning Bus Notifier"
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "25 6 * * 1-6"
+      timezone: "Asia/Kolkata"
+
+jobs:
+  check_buses:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code from repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Install requests library
+        run: pip install requests
+
+      - name: Run Bus Checker
+        run: python notif.py
