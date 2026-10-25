@@ -19,7 +19,7 @@ jobs:
           python-version: '3.13'
 
       - name: Install requests library
-        run: pip install requests
+        run: pip install curl_cffi
 
       - name: Run Bus Checker
         run: python notif.py
