@@ -1,9 +1,12 @@
 from curl_cffi import requests
-from datetime import datetime, date
+from datetime import datetime, date, timezone, timedelta
 from searchurl import SearchURL
 from projectenums import BusCategory
 from zoneinfo import ZoneInfo
 import logging
+
+utc_now = datetime.now(timezone.utc)
+ist_now = utc_now + timedelta(hours=5, minutes=30)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -11,11 +14,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+logger.info(f"UTC Time: {utc_now}")
+logger.info(f"IST Time: {ist_now}")
 
 def get_inventory(category: BusCategory) -> dict:
-    ist_now = datetime.now(ZoneInfo("Asia/Kolkata"))
-
-    doj = ist_now.today()
+    doj=ist_now.date()
     travelsList = []
     url = SearchURL(doj, 50, category)
 
@@ -101,7 +104,7 @@ gt_seats = 0
 for bus in private_inventory:
     name = bus["travelsName"]
     dep_time = bus["departureTime"].split(" ")[1][:5]
-    current_time = datetime.now().strftime("%H:%M")
+    current_time = ist_now.strftime("%H:%M")
     logger.info("Checking private bus %s at %s; current time %s", name, dep_time, current_time)
 
     if "Gujarat Travels Agency" and (current_time < "07:00" and dep_time <= "07:00"):
@@ -123,7 +126,7 @@ else:
 
     for bus in gsrtc_inventory:
         dep_time = bus["departureTime"].split(" ")[1][:5]
-        current_time = datetime.now().strftime("%H:%M")
+        current_time = ist_now.strftime("%H:%M")
         logger.info("Evaluating GSRTC bus departure %s at current time %s", dep_time, current_time)
 
         if current_time < dep_time and dep_time <= "07:30":
