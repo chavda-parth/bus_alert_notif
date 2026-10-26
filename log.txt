@@ -1,7 +1,0 @@
-2026-10-26 02:42:47,345Z INFO __main__: now=2026-10-26T02:42:47.345372+00:00 target=2026-10-27 window=[2026-10-27T04:00:00+05:30, GT<=07:00:00, GSRTC<=07:30:00]
-2026-10-26 02:42:47,345Z INFO __main__: Fetching PRIVATE inventory for 2026-10-27 from https://www.redbus.in/rpw/api/searchResults?fromCity=1125&toCity=472&DOJ=27-Oct-2026&limit=50&offset=0&meta=true&groupId=0&sectionId=0&sort=0&sortOrder=0&from=initialLoad&getUuid=true&bT=1&clearLMBFilter=undefined&isFilterApplied=false
-2026-10-26 02:42:48,196Z INFO __main__: Inventory request for PRIVATE status 200
-2026-10-26 02:42:48,199Z INFO __main__: Received 50 entries for PRIVATE
-2026-10-26 02:42:48,203Z INFO __main__: Gujarat Travels: 38 seats at 06:45:00
-2026-10-26 02:42:48,203Z INFO __main__: Sending notification: Gujarat Travels Seats Available! - Available Seats: 38
-2026-10-26 02:42:49,044Z INFO __main__: Notification status 200
