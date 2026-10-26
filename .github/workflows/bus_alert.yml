@@ -3,7 +3,7 @@ name: "Morning Bus Notifier"
 on: 
   workflow_dispatch:
   schedule:
-    # - cron: "55 0 * * 1-6"
+    - cron: "55 0 * * 1-6"
 
 jobs:
   check_buses:
