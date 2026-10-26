@@ -3,6 +3,14 @@ from datetime import datetime, date
 from searchurl import SearchURL
 from projectenums import BusCategory
 from zoneinfo import ZoneInfo
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+)
+logger = logging.getLogger(__name__)
+
 
 def get_inventory(category: BusCategory) -> dict:
     ist_now = datetime.now(ZoneInfo("Asia/Kolkata"))
@@ -23,7 +31,7 @@ def get_inventory(category: BusCategory) -> dict:
     }
 
     payload = {
-        "appliedFilterCount": 0, 
+        "appliedFilterCount": 0,
         "onlyShow": [],
         "dt": [],
         "SeaterType": [],
@@ -43,25 +51,37 @@ def get_inventory(category: BusCategory) -> dict:
         "preRouteFilters": None
     }
 
+    request_url = url.get_formatted_url()
+    logger.info("Fetching inventory for %s from %s", category.name, request_url)
+
     response = requests.post(
-        url.get_formatted_url(), 
-        headers=headers, 
+        url=request_url,
+        headers=headers,
         json=payload,
         impersonate="chrome"
     )
+    logger.info("Inventory request for %s completed with status %s", category.name, response.status_code)
 
-    res_json: dict = response.json()
+    try:
+        res_json: dict = response.json()
+    except ValueError as exc:
+        logger.exception("Failed to decode JSON response for %s: %s", category.name, exc)
+        return {}
 
     if 'success' not in res_json.keys() or not res_json['success']:
+        logger.warning("Inventory request for %s was unsuccessful: %s", category.name, res_json)
         return {}
 
     data = res_json["data"]
     inventories = data["inventories"]
+    logger.info("Received %d inventory entries for %s", len(inventories), category.name)
 
     return inventories
 
-def send_notification(title: str, message:str):
-    requests.post(
+
+def send_notification(title: str, message: str):
+    logger.info("Sending notification: %s - %s", title, message)
+    response = requests.post(
         url=f"https://ntfy.sh/jam_rjt_bus_status_chavda_parth",
         data=message.encode('utf-8'),
         headers={
@@ -70,21 +90,28 @@ def send_notification(title: str, message:str):
             "Tags": "bus"
         }
     )
+    logger.info("Notification dispatched with status %s", response.status_code)
+
 
 private_inventory = get_inventory(category=BusCategory.PRIVATE)
+logger.info("Private inventory result count: %s", len(private_inventory))
+
 gt_seats = 0
 
 for bus in private_inventory:
     name = bus["travelsName"]
     dep_time = bus["departureTime"].split(" ")[1][:5]
     current_time = datetime.now().strftime("%H:%M")
+    logger.info("Checking private bus %s at %s; current time %s", name, dep_time, current_time)
 
     if "Gujarat Travels Agency" and (current_time < "07:00" and dep_time <= "07:00"):
         gt_seats = bus["availableSeats"]
+        logger.info("Selected Gujarat Travels availability: %s seats at %s", gt_seats, dep_time)
         break
 
 
 if (gt_seats > 5):
+    logger.info("Sending Gujarat Travels seats available notification with %s seats", gt_seats)
     send_notification(
         title="Gujarat Travels Seats Available!",
         message=f"Available Seats: {gt_seats}"
@@ -92,20 +119,25 @@ if (gt_seats > 5):
 else:
     gsrtc_inventory = get_inventory(BusCategory.GSRTC)
     bus_count = 0
-    
+    logger.info("Checking GSRTC inventory count: %s", len(gsrtc_inventory))
+
     for bus in gsrtc_inventory:
         dep_time = bus["departureTime"].split(" ")[1][:5]
         current_time = datetime.now().strftime("%H:%M")
+        logger.info("Evaluating GSRTC bus departure %s at current time %s", dep_time, current_time)
 
         if current_time < dep_time and dep_time <= "07:30":
             bus_count += 1
+            logger.info("GSRTC bus available before 07:30: %s", dep_time)
 
     if (bus_count > 0):
+        logger.info("Sending GSRTC buses available notification: %s buses", bus_count)
         send_notification(
             title="Gujarat Travels Not Available",
             message=f"GSRTC Buses: {bus_count} Available"
         )
     else:
+        logger.warning("No suitable buses found for the current time window")
         send_notification(
             title="Could not find buses.",
             message="No updates available."
