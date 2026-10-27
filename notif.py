@@ -6,20 +6,27 @@ from zoneinfo import ZoneInfo
 import os
 import logging
 
-year = os.environ.get("YEAR")
-month = os.environ.get("MONTH")
-day =  os.environ.get("DATE"),
-hour = os.environ.get("HOUR"),
-minute = os.environ.get("MINUTE"),
-second = os.environ.get("SECOND"),
-
-ist_now = datetime(int(year), int(month), int(day), int(hour), int(minute), int(second), 1)
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
 )
 logger = logging.getLogger(__name__)
+
+year = str(os.environ.get("YEAR"))
+month = str(os.environ.get("MONTH"))
+day =  str(os.environ.get("DATE"))
+hour = str(os.environ.get("HOUR"))
+minute = str(os.environ.get("MINUTE"))
+second = str(os.environ.get("SECOND"))
+
+logger.info("Year: %s", year)
+logger.info("Month: %s", month)
+logger.info("Day: %s", day)
+logger.info("Hour: %s", hour)
+logger.info("Minute: %s", minute)
+logger.info("Second: %s", second)
+
+ist_now = datetime(int(year), int(month), int(day), int(hour), int(minute), int(second), 1)
 
 # logger.info(f"UTC Time: {utc_date}")
 logger.info(f"IST Time: {ist_now}")
