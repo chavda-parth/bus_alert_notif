@@ -5,33 +5,33 @@ name: Morning Bus Notifier
 on:
   workflow_dispatch:
     inputs:
-      input_1:
-        description: year
+      year:
+        description: Custom Year
         required: true
         default: ''
         type: number
-      input_2:
-        description: month
+      month:
+        description: Custom Month
         required: true
         default: ''
         type: number
-      input_3:
-        description: date
+      date:
+        description: Custom Date
         required: true
         default: ''
         type: number
-      input_4:
-        description: hour
+      hour:
+        description: Custom Hour
         required: true
         default: ''
         type: number
-      input_5:
-        description: minute
+      minute:
+        description: Custom Minute
         required: true
         default: ''
         type: number
-      input_6:
-        description: second
+      second:
+        description: Custom Second
         required: true
         default: ''
         type: number
@@ -52,7 +52,7 @@ jobs:
     - name: Run Bus Checker
       run: python notif.py
       env: 
-        YEAR: ${{ inputs.year }}
+        YEAR: ${{ inputs.year}}
         MONTH: ${{ inputs.month }}
         DATE: ${{ inputs.date }}
         HOUR: ${{ inputs.hour }}
