@@ -31,4 +31,7 @@ jobs:
       run: pip install curl_cffi
     - name: Run Bus Checker
       run: python notif.py
+      env: 
+        CUSTOM_DATE: ${{ inputs.custom_date }}
+        CUSTOM_TIME: ${{ inputs.custom_time }}
     name: Check buses
