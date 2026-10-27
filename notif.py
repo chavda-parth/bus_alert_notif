@@ -116,12 +116,13 @@ for bus in private_inventory:
 if (gt_seats > 5):
     logger.info("Sending Gujarat Travels seats available notification with %s seats", gt_seats)
     send_notification(
-        title="Gujarat Travels Seats Available!",
-        message=f"Available Seats: {gt_seats}"
+        title=f"{gt_seats} available in Gujarat Travels",
+        message=f"Departure Time: {dep_time}"
     )
 else:
     gsrtc_inventory = get_inventory(BusCategory.GSRTC)
     bus_count = 0
+					bus_times = []
     logger.info("Checking GSRTC inventory count: %s", len(gsrtc_inventory))
 
     for bus in gsrtc_inventory:
@@ -130,13 +131,14 @@ else:
 
         if current_time < dep_time and dep_time <= "07:30":
             bus_count += 1
+															bus_times.append(dep_time)
             logger.info("GSRTC bus available before 07:30: %s", dep_time)
 
     if (bus_count > 0):
         logger.info("Sending GSRTC buses available notification: %s buses", bus_count)
         send_notification(
             title="Gujarat Travels Not Available",
-            message=f"GSRTC Buses: {bus_count} Available"
+            message=f"{bus_count} GSRTC Buses Available. Timings: {dep_time}"
         )
     else:
         logger.warning("No suitable buses found for the current time window")
