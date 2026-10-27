@@ -6,15 +6,35 @@ on:
   workflow_dispatch:
     inputs:
       input_1:
-        description: custom_date
-        required: false
+        description: year
+        required: true
         default: ''
-        type: string
+        type: number
       input_2:
-        description: custom_time
-        required: false
+        description: month
+        required: true
         default: ''
-        type: string
+        type: number
+      input_3:
+        description: date
+        required: true
+        default: ''
+        type: number
+      input_4:
+        description: hour
+        required: true
+        default: ''
+        type: number
+      input_5:
+        description: minute
+        required: true
+        default: ''
+        type: number
+      input_6:
+        description: second
+        required: true
+        default: ''
+        type: number
   schedule:
   - cron: 55 0 * * 1-6
 jobs:
@@ -32,6 +52,10 @@ jobs:
     - name: Run Bus Checker
       run: python notif.py
       env: 
-        CUSTOM_DATE: ${{ inputs.custom_date }}
-        CUSTOM_TIME: ${{ inputs.custom_time }}
+        YEAR: ${{ inputs.year }}
+        MONTH: ${{ inputs.month }}
+        DATE: ${{ inputs.date }}
+        HOUR: ${{ inputs.hour }}
+        MINUTE: ${{ inputs.minute }}
+        SECOND: ${{ inputs.second }}
     name: Check buses
