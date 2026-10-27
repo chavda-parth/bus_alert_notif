@@ -3,10 +3,17 @@ from datetime import datetime, date, timezone, timedelta
 from searchurl import SearchURL
 from projectenums import BusCategory
 from zoneinfo import ZoneInfo
+import os
 import logging
 
-utc_date = (datetime.now(timezone.utc) + timedelta(days=1, hours=5, minutes=30)).date()
-ist_now = datetime(utc_date.year, utc_date.month, utc_date.day, 5, 32, 0, 0)
+year = os.environ.get("YEAR")
+month = os.environ.get("MONTH")
+day =  os.environ.get("DATE"),
+hour = os.environ.get("HOUR"),
+minute = os.environ.get("MINUTE"),
+second = os.environ.get("SECOND"),
+
+ist_now = datetime(year, month, day, hour, minute, second, 1)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -14,7 +21,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-logger.info(f"UTC Time: {utc_date}")
+# logger.info(f"UTC Time: {utc_date}")
 logger.info(f"IST Time: {ist_now}")
 
 def get_inventory(category: BusCategory) -> dict:
