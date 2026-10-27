@@ -5,8 +5,8 @@ from projectenums import BusCategory
 from zoneinfo import ZoneInfo
 import logging
 
-utc_now = datetime.now(timezone.utc)
-ist_now = utc_now + timedelta(hours=5, minutes=30)
+utc_date = (datetime.now(timezone.utc) + timedelta(days=1, hours=5, minutes=30)).date()
+ist_now = datetime(utc_date.year, utc_date.month, utc_date.day, 6, 25, 0, 0)
 
 logging.basicConfig(
     level=logging.INFO,
