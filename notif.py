@@ -6,7 +6,7 @@ from zoneinfo import ZoneInfo
 import logging
 
 utc_date = (datetime.now(timezone.utc) + timedelta(days=1, hours=5, minutes=30)).date()
-ist_now = datetime(utc_date.year, utc_date.month, utc_date.day, 6, 25, 0, 0)
+ist_now = datetime(utc_date.year, utc_date.month, utc_date.day, 5, 32, 0, 0)
 
 logging.basicConfig(
     level=logging.INFO,
