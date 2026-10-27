@@ -100,11 +100,11 @@ private_inventory = get_inventory(category=BusCategory.PRIVATE)
 logger.info("Private inventory result count: %s", len(private_inventory))
 
 gt_seats = 0
+current_time = ist_now.strftime("%H:%M")
 
 for bus in private_inventory:
     name = bus["travelsName"]
     dep_time = bus["departureTime"].split(" ")[1][:5]
-    current_time = ist_now.strftime("%H:%M")
     logger.info("Checking private bus %s at %s; current time %s", name, dep_time, current_time)
 
     if "Gujarat Travels Agency" and (current_time < "07:00" and dep_time <= "07:00"):
@@ -126,7 +126,6 @@ else:
 
     for bus in gsrtc_inventory:
         dep_time = bus["departureTime"].split(" ")[1][:5]
-        current_time = ist_now.strftime("%H:%M")
         logger.info("Evaluating GSRTC bus departure %s at current time %s", dep_time, current_time)
 
         if current_time < dep_time and dep_time <= "07:30":
