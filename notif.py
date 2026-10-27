@@ -6,12 +6,12 @@ from zoneinfo import ZoneInfo
 import os
 import logging
 
-year = os.environ.get("YEAR")
-month = os.environ.get("MONTH")
-day =  os.environ.get("DATE"),
-hour = os.environ.get("HOUR"),
-minute = os.environ.get("MINUTE"),
-second = os.environ.get("SECOND"),
+year: int = os.environ.get("YEAR")
+month: int = os.environ.get("MONTH")
+day: int =  os.environ.get("DATE"),
+hour: int = os.environ.get("HOUR"),
+minute: int = os.environ.get("MINUTE"),
+second: int = os.environ.get("SECOND"),
 
 ist_now = datetime(year, month, day, hour, minute, second, 1)
 
