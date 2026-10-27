@@ -118,7 +118,7 @@ for bus in private_inventory:
 if (gt_seats > 5):
     logger.info("Sending Gujarat Travels seats available notification with %s seats", gt_seats)
     send_notification(
-        title=f"{gt_seats} available in Gujarat Travels",
+        title=f"{gt_seats} seats available in Gujarat Travels",
         message=f"Departure Time: {gt_dep_time}"
     )
 else:
