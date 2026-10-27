@@ -14,7 +14,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-logger.info(f"UTC Time: {utc_now}")
+logger.info(f"UTC Time: {utc_date}")
 logger.info(f"IST Time: {ist_now}")
 
 def get_inventory(category: BusCategory) -> dict:
